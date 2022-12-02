@@ -11,7 +11,7 @@ package TrabajoFinal;
  */
 public class Soluciones {
     public static void main(String[] args){
-        NReinas reinas = new NReinas(); //Si no se especifica el tamaño del tablero, será de 8x8.
+        NReinas reinas = new NReinas(15, true); //Si no se especifica el tamaño del tablero, será de 8x8.
         //reinas.verCantidadSoluciones();
         reinas.mostrarSoluciones();
     }

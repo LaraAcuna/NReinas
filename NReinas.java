@@ -14,13 +14,19 @@ import java.util.ListIterator;
  */
 public class NReinas {
     private int tablero; //tablero de tamaño int x int
+    private boolean tiempo;
+    
+    public NReinas(int tablero, boolean tiempo){
+        this.tablero = tablero;
+        this.tiempo = tiempo;
+    }
     
     public NReinas(int tablero){
-        this.tablero = tablero;
+        this(tablero, false);
     }
     
     public NReinas(){
-        this(8); //Por defecto es de 8x8 para ilustrar el Problema de las 8 Reinas
+        this(8, false); //Por defecto es de 8x8 para ilustrar el Problema de las 8 Reinas
     }
     
     private boolean comparteDiagonal(int k, int[] columnasOcupadas, int miColumna){
@@ -62,8 +68,10 @@ public class NReinas {
         if(k == this.tablero-1){
             //exito
             int[] solucion = new int[this.tablero]; 
-            for(int i=0; i<this.tablero; i++){
-                solucion[i]=columnasOcupadas[i];
+            if(!this.tiempo){
+                for(int i=0; i<this.tablero; i++){
+                    solucion[i]=columnasOcupadas[i];
+                }
             }
             soluciones.add(solucion);
         }else{
@@ -101,13 +109,27 @@ public class NReinas {
     private void verSoluciones(boolean dibujar){
         LinkedList<int[]> soluciones = new LinkedList<>();
         int[] columnasOcupadas = new int[this.tablero];
+        long inicio=0, fin=0;
+        if(this.tiempo){
+            inicio=System.nanoTime();
+        }    
         reinas(-1, columnasOcupadas, soluciones);
+        if(this.tiempo){
+            fin=System.nanoTime();
+        }
         ListIterator<int[]> iterador = soluciones.listIterator();
+        if(this.tiempo){
+            System.out.println("TIEMPO DE RESOLUCIÓN: "+(fin-inicio)+" ns.");
+        }
         System.out.println("Hay "+soluciones.size()+" soluciones para un tablero de: "+this.tablero+" x "+this.tablero+" celdas \n");
         if(dibujar){
-            while(iterador.hasNext()){
+            if(this.tiempo){
+                System.out.println("No se almacenaron los tableros para economizar tiempo."); 
+            }else{
+               while(iterador.hasNext()){
                 System.out.println("> Solución nro "+(iterador.nextIndex()+1));
                 this.mostrarSolucion(iterador.next());
+               } 
             }
         }
     }
